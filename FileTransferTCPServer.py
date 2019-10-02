@@ -1,8 +1,8 @@
 import socket                   # Import socket module
 
 port = 50000                    # Reserve a port for your service every new transfer wants a new port or you must wait.
-s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)             # Create a socket object
-host = "leaderpi"   # Get local machine name
+s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)             # Create a socket object
+host = "fde5:f421:b815:0:8a1d:65a0:e665:d527"   # Get local machine name
 s.bind((host, port))            # Bind to the port
 s.listen(5)                     # Now wait for client connection.
 
@@ -16,7 +16,7 @@ while True:
     print('Server received', repr(data))
 
     filename='TCPSERVER.py' #In the same folder or path is this file running must the file you want to tranfser to be
-    f = open(filename,'rb')
+    f = open('kappa','rb')
     l = f.read(1024)
     while (l):
        conn.send(l)
