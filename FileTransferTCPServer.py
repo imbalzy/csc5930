@@ -14,16 +14,24 @@ while True:
     print 'Got connection from', addr
     data = conn.recv(1024)
     print('Server received', repr(data))
+    _, listkey, listnonce = decrypt(data)
+    filelist, _, _ = decrypt(data).split('/n')
 
-    filename='TCPSERVER.py' #In the same folder or path is this file running must the file you want to tranfser to be
-    f = open('kappa','rb')
-    l = f.read(1024)
-    while (l):
-       conn.send(l)
-       print('Sent ',repr(l))
-       l = f.read(1024)
-    f.close()
+    for i in len(filelist):
+        if (filelist[i] == "!END!"):
+            break
+        encryptFile(filelist[i], "en"+filelist[i], key, nonce)
+        enf = open("en"+filelist[i], 'rb')
+        enl = enf.read(1024)
+        while (enl):
+            conn.send(enl)
+            enl = enf.read(1024)
+        enf.close()
+        while (!conn.recv(1024)):
+            #wait for client to say send more
+            pass
 
     print('Done sending')
     conn.send('Thank you for connecting')
     conn.close()
+
